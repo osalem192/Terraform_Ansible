@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'hashicorp/terraform:1.9.7' // Official Terraform image
+            args '--entrypoint=""' // Override entrypoint for Jenkins compatibility
+        }
+    }
 
     stages {
         stage('Terraform Init & Apply') {
