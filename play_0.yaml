@@ -1,0 +1,22 @@
+---
+- name: Book1 - Install and Configure Apache
+  hosts: web
+  become: yes # Run tasks with sudo
+  tasks:
+    - name: Install Apache (httpd)
+      dnf:
+        name: httpd
+        state: present
+
+    - name: Enable and start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Allow HTTP service through firewalld
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
