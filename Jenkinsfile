@@ -1,26 +1,25 @@
 pipeline {
     agent any
 
-    environment {
-        TF_DIR = './'
-        ANSIBLE_DIR = './'
-    }
-
     stages {
         stage('Terraform Init & Apply') {
             steps {
-                sh "Terraform Stage"
+                echo "Terraform Stage"
                 sh 'terraform init'
                 sh 'terraform apply -auto-approve'
-                }
             }
         }
 
         stage('Ansible Provisioning') {
             steps {
-                sh "Ansible Stage"
-                ansiblePlaybook colorized: true, credentialsId: 'SSH_Ubuntu_id_rsa', inventory: './', playbook: './', vaultTmpPath: ''
-                }
+                echo "Ansible Stage"
+                ansiblePlaybook(
+                    colorized: true,
+                    credentialsId: 'SSH_Ubuntu_id_rsa',
+                    inventory: 'inventory.ini',   // replace with your actual inventory file
+                    playbook: 'site.yml',         // replace with your actual playbook file
+                    vaultTmpPath: ''
+                )
             }
         }
     }
