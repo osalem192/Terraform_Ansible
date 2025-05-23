@@ -9,9 +9,8 @@ pipeline {
     stages {
         stage('Terraform Init & Apply') {
             steps {
-                dir("${TF_DIR}") {
-                    sh 'terraform init'
-                    sh 'terraform apply -auto-approve'
+                sh 'terraform init'
+                sh 'terraform apply -auto-approve'
                 }
             }
         }
