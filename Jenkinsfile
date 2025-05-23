@@ -18,8 +18,7 @@ pipeline {
 
         stage('Ansible Provisioning') {
             steps {
-                dir("${ANSIBLE_DIR}") {
-                    sh 'ansible-playbook -i inventory setup.yml'
+                ansiblePlaybook colorized: true, credentialsId: 'SSH_Ubuntu_id_rsa', inventory: './', playbook: './', vaultTmpPath: ''
                 }
             }
         }
