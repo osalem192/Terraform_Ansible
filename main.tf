@@ -100,12 +100,14 @@ resource "aws_instance" "public_ec2" {
   associate_public_ip_address = true
   key_name                    = aws_key_pair.my_key_pair.key_name
 
-  provisioner "local-exec" {
-    command = <<EOT
-echo "[web]" > inventory
-echo "${self.public_ip} ansible_user=ec2-user ansible_ssh_private_key_file=var.SSH_Key_private" >> inventory
-EOT
-  }
+  user_data = <<-EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y httpd
+              systemctl start httpd
+              systemctl enable httpd
+              echo "<h1>Deployed By jenkins and Working!</h1>" > /var/www/html/index.html
+              EOF
 
   tags = {
     Name = "jenkins-EC2"
