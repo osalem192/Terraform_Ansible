@@ -102,11 +102,11 @@ resource "aws_instance" "public_ec2" {
 
   user_data = <<-EOF
               #!/bin/bash
-              yum update -y
-              yum install -y httpd
-              systemctl start httpd
-              systemctl enable httpd
-              echo "<h1>Deployed By jenkins and Working!</h1>" > /var/www/html/index.html
+              sudo yum update -y
+              sudo yum install -y httpd
+              sudo systemctl start httpd
+              sudo systemctl enable httpd
+              sudo echo "<h1>Deployed By jenkins and Working!</h1>" > /var/www/html/index.html
               EOF
 
   tags = {
