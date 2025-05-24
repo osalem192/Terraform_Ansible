@@ -85,10 +85,10 @@ resource "aws_security_group" "allow_all" {
   }
 }
 
-resource "aws_key_pair" "my_key_pair" {
-  key_name   = "my-ec2-key"       # Name of the key pair in AWS
-  public_key = var.SSH_Key_public # Path to your public key file
-}
+#resource "aws_key_pair" "my_key_pair" {
+#  key_name   = "my-ec2-key"       # Name of the key pair in AWS
+#  public_key = var.SSH_Key_public # Path to your public key file
+#}
 
 # EC2 Instance
 resource "aws_instance" "public_ec2" {
@@ -98,7 +98,7 @@ resource "aws_instance" "public_ec2" {
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.allow_all.id]
   associate_public_ip_address = true
-  key_name                    = aws_key_pair.my_key_pair.key_name
+#  key_name                    = aws_key_pair.my_key_pair.key_name
 
   user_data = <<-EOF
               #!/bin/bash
