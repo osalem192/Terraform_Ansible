@@ -2,6 +2,12 @@ provider "aws" {
   region = "us-east-1"
 }
 
+variable "SSH_Key_private" {
+}
+
+variable "SSH_Key_public" {
+}
+
 # VPC
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
@@ -80,8 +86,8 @@ resource "aws_security_group" "allow_all" {
 }
 
 resource "aws_key_pair" "my_key_pair" {
-  key_name   = "my-ec2-key"              # Name of the key pair in AWS
-  public_key = file("~/.ssh/id_rsa.pub") # Path to your public key file
+  key_name   = "my-ec2-key"       # Name of the key pair in AWS
+  public_key = var.SSH_Key_public # Path to your public key file
 }
 
 # EC2 Instance
@@ -97,7 +103,7 @@ resource "aws_instance" "public_ec2" {
   provisioner "local-exec" {
     command = <<EOT
 echo "[web]" > inventory
-echo "${self.public_ip} ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/id_rsa" >> inventory
+echo "${self.public_ip} ansible_user=ec2-user ansible_ssh_private_key_file=var.SSH_Key_private" >> inventory
 EOT
   }
 
